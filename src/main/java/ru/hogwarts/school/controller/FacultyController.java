@@ -31,8 +31,8 @@ public class FacultyController {
     }
 
     @DeleteMapping("{id}")
-    public Faculty delete(@PathVariable Long id) {
-        return facultyService.delete(id);
+    public void delete(@PathVariable Long id) {
+        facultyService.delete(id);
     }
     @GetMapping
     public List<Faculty> getByColor(@RequestParam String color) {
