@@ -1,6 +1,5 @@
 package ru.hogwarts.school.service.impl;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -8,7 +7,6 @@ import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 @Service
 public class FacultyServiceImpl implements FacultyService {
     private final FacultyRepository facultyRepository;
@@ -44,10 +42,7 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public List<Faculty> getByColor(String color) {
-        return facultyRepository.findAll()
-                .stream()
-                .filter(it -> it.getColor().equals(color))
-                .collect(Collectors.toList());
+        return facultyRepository.findByColor(color);
     }
 
     @Override

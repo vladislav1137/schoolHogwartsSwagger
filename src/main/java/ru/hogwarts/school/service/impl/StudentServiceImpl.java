@@ -1,6 +1,5 @@
 package ru.hogwarts.school.service.impl;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -8,7 +7,6 @@ import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -43,10 +41,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public List<Student> getByAge(int age) {
-        return  studentRepository.findAll()
-                .stream()
-                .filter(it -> it.getAge()== age)
-                .collect(Collectors.toList());
+        return studentRepository.findByAge(age);
     }
 
     @Override
