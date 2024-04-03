@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -55,6 +58,7 @@ public class FacultyControllerTest {
                 entity,
                 Faculty.class);
 
+
         assertNotNull(facultyResponseEntity);
         assertEquals(facultyResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
 
@@ -65,7 +69,7 @@ public class FacultyControllerTest {
     }
 
     @Test
-    void sholudGetFaculty() {
+    void shouldGetFaculty() {
         Faculty faculty = new Faculty("slyth", "blue");
         faculty = facultyRepository.save(faculty);
 
@@ -101,8 +105,39 @@ public class FacultyControllerTest {
 
     @Test
     void shouldGetByColor() {
+        Faculty faculty = new Faculty("Gryffindor", "Red");
+        faculty = facultyRepository.save(faculty);
+
+        ResponseEntity<List<Faculty>> facultyResponseEntity = restTemplate.exchange(
+                "http://localhost:" + port + "/faculties?color=" + faculty.getColor(),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Faculty>>() {});
+
+
+        assertNotNull(facultyResponseEntity);
+        assertEquals(facultyResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
+
+        List<Faculty> actualFaculty = facultyResponseEntity.getBody();
     }
 
+    @Test
+    void shouldGetByColorOrGetByName() {
+        Faculty faculty = new Faculty("Gryffindor", "Red");
+        faculty = facultyRepository.save(faculty);
+
+        ResponseEntity<List<Faculty>> facultyResponseEntity = restTemplate.exchange(
+                "http://localhost:" + port + "/faculties/getByNameOrColorIgnoreCase?name=" + faculty.getName() + "&color="+faculty.getColor(),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Faculty>>() {});
+
+
+        assertNotNull(facultyResponseEntity);
+        assertEquals(facultyResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
+
+        List<Faculty> actualFaculty = facultyResponseEntity.getBody();
+    }
 }
 
 
