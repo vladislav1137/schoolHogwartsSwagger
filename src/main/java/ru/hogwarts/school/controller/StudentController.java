@@ -53,7 +53,7 @@ public class StudentController {
     public List<Student> getByAgeBetween(
             @RequestParam int ageFrom,
             @RequestParam int ageTo
-    ){
+    ) {
         return studentService.getByAgeBetween(ageFrom, ageTo);
     }
 
@@ -68,5 +68,20 @@ public class StudentController {
             @RequestParam MultipartFile avatar) throws IOException {
         avatarService.uploadAvatar(studentId, avatar);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("studentCount")
+    public int getStudentCount() {
+        return studentService.getStudentCount();
+    }
+
+    @GetMapping("averageAge")
+    public int getAverageAge() {
+        return studentService.getAverageAge();
+    }
+
+    @GetMapping("lastFive")
+    public List<Student> getLastFive() {
+        return studentService.getLastFive();
     }
 }

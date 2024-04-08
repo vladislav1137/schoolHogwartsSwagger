@@ -91,6 +91,6 @@ public class Avatar {
 
     private byte[] data;
     @OneToOne
-    @JoinColumn(name = "srudent_id")
+    @JoinColumn(name = "student_id")
     private Student student;
 }
